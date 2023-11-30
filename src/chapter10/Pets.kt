@@ -8,7 +8,7 @@ class Dog(name: String): Pet(name)
 
 class Fish(name: String): Pet(name)
 
-class Contest<T: Pet>(var vet: Vet<T>){
+class Contest<T: Pet>(var vet: Vet<in T>){
     val scores: MutableMap<T, Int> = mutableMapOf()
 
     fun addScore (t: T, score: Int = 0){
@@ -30,15 +30,25 @@ fun main(){
     val catKatsu = Cat("Katsu")
     val fishFinny = Fish("Finny")
 
-    val catContest = Contest<Cat>()
+    val catVet = Vet<Cat>()
+    val fishVet = Vet<Fish>()
+    val petVet = Vet<Pet>()
+
+    catVet.treat(catFuzz)
+    petVet.treat(catKatsu)
+    petVet.treat(fishFinny)
+
+    val catContest = Contest<Cat>(catVet)
     catContest.addScore(catFuzz, 50)
     catContest.addScore(catKatsu, 45)
     val topCat = catContest.getWinners().first()
     println("Cat contest winner is ${topCat.name}")
 
-    val petContest = Contest<Pet>()
+    val petContest = Contest<Pet>(petVet)
     petContest.addScore(catFuzz, 50)
     petContest.addScore(fishFinny, 56)
     val topPet = petContest.getWinners().first()
     println("Pet contest winner is ${topPet.name}")
+
+    val fishContest = Contest<Fish>(petVet)
 }
