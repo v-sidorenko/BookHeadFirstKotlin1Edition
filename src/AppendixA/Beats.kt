@@ -2,6 +2,7 @@ package AppendixA
 
 import java.io.File
 import javax.sound.sampled.AudioSystem
+import kotlinx.coroutines.*
 
 fun playBeats (beats: String, file: String) {
     val parts = beats.split("x")
@@ -29,7 +30,6 @@ fun playSound (file: String) {
 }
 
 fun main () {
-
-    playBeats("x-x-x-x-x-x-", "src/AppendixA/audio/toms.aiff")
+    GlobalScope.launch { playBeats("x-x-x-x-x-x-", "src/AppendixA/audio/toms.aiff")}
     playBeats("x-----x-----", "src/AppendixA/audio/crash_cymbal.aiff")
 }
